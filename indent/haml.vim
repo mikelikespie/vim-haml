@@ -12,6 +12,9 @@ unlet! b:did_indent
 runtime! indent/sass.vim
 
 unlet! b:did_indent
+runtime! indent/javascript.vim
+
+unlet! b:did_indent
 let b:did_indent = 1
 
 setlocal autoindent sw=2 et
@@ -61,6 +64,8 @@ function! GetHamlIndent()
     return increase
   elseif line =~ '^:'
     return increase
+  elseif exists("*IndentAnything") && synIDattr(synID(v:lnum,1,1),'name') ==? 'hamlJavascriptFilter'
+    return IndentAnything()
   elseif line =~ '^'.s:tag.'[=~-]\s*\%(\%(if\|else\|elsif\|unless\|case\|when\|while\|until\|for\|begin\|module\|class\|def\)\>\%(.*\<end\>\)\@!\|.*do\%(\s*|[^|]*|\)\=\s*$\)'
     return increase
   elseif line == '-#'
