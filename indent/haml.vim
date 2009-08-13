@@ -58,12 +58,12 @@ function! GetHamlIndent()
 
   if line =~ '^!!!'
     return indent
-  elseif synIDattr(synID(v:lnum,1,1),'name') ==? 'hamlSassFilter'
-    return GetSassIndent()
   elseif line =~ '^/\%(\[[^]]*\]\)\=$'
     return increase
-  elseif line =~ '^:'
-    return increase
+  elseif line =~ '^:' && synIDattr(synID(lnum,1,1),'name') !=? 'hamlSassFilter'
+    return increase 
+  elseif synIDattr(synID(v:lnum,1,1),'name') ==? 'hamlSassFilter'
+    return GetSassIndent()
   elseif exists("*IndentAnything") && synIDattr(synID(v:lnum,1,1),'name') ==? 'hamlJavascriptFilter'
     return IndentAnything()
   elseif line =~ '^'.s:tag.'[=~-]\s*\%(\%(if\|else\|elsif\|unless\|case\|when\|while\|until\|for\|begin\|module\|class\|def\)\>\%(.*\<end\>\)\@!\|.*do\%(\s*|[^|]*|\)\=\s*$\)'
