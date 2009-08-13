@@ -7,6 +7,10 @@ if exists("b:did_indent")
   finish
 endif
 runtime! indent/ruby.vim
+
+unlet! b:did_indent
+runtime! indent/sass.vim
+
 unlet! b:did_indent
 let b:did_indent = 1
 
@@ -51,6 +55,8 @@ function! GetHamlIndent()
 
   if line =~ '^!!!'
     return indent
+  elseif synIDattr(synID(v:lnum,1,1),'name') ==? 'hamlSassFilter'
+    return GetSassIndent()
   elseif line =~ '^/\%(\[[^]]*\]\)\=$'
     return increase
   elseif line =~ '^:'
